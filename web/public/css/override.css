@@ -1,0 +1,8 @@
+.input-group .form-select {
+  width: 100%;
+  border-radius: var(--bs-border-radius) !important;
+}
+
+#tombolCari {
+  display: none;
+}

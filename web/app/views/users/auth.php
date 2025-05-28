@@ -1,15 +1,3 @@
-<?php
-if (isset($_SESSION['user'])) {
-    header("Location: ../");
-}
-?>
-
-<div class="container">
-    <div class="col">
-        <?php Flasher::flash() ?>
-    </div>
-</div>
-
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-9 col-lg-4 order-2">

@@ -3,17 +3,11 @@
 class Users_model
 {
     private $table = 'users';
-
-    // required for JOIN to fetch user's profile
-    private $usersTable;
-    private $profileTable;
     private $db;
 
     public function __construct()
     {
         $this->db = new Database();
-        $this->usersTable = $this->table;
-        $this->profileTable = 'user_profile';
     }
     // public function getAllMahasiswa()
     // {
@@ -108,7 +102,10 @@ class Users_model
     }
     public function signIn($data)
     {
-        $query = "SELECT * FROM " . $this->table . " WHERE username = :username";
+        $query = "SELECT u.*, r.name as role_name
+                FROM " . $this->table . " u
+                JOIN roles r ON u.role_id = r.id
+                WHERE username = :username";
 
         $this->db->query($query);
         $this->db->bind('username', $data['username']);
@@ -118,8 +115,9 @@ class Users_model
         if ($user) {
             if (password_verify($data['password'], $user['password'])) {
                 unset($user['password']);
+                $_SESSION['user_id'] = $user['id'];
                 $_SESSION['username'] = $user['username'];
-                $_SESSION['user_role'] = $user['role_id'];
+                $_SESSION['user_role'] = $user['role_name'];
                 return ['success' => true];
             } else {
                 return [

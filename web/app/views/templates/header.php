@@ -63,6 +63,12 @@
         </nav>
     <?php endif ?>
 
+    <div class="container">
+        <div class="col">
+            <?php Flasher::flash() ?>
+        </div>
+    </div>
+
 
 
     <!-- 

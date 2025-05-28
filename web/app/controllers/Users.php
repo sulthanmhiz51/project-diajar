@@ -2,12 +2,15 @@
 
 class Users extends Controller
 {
+    protected $middleware = [
+        ['GuestsMiddleware', ['auth', 'register']]
+    ];
     public function index()
     {
-        $data['judul'] = 'Register';
-        $this->view('templates/header', $data);
-        $this->view('users/register');
-        $this->view('templates/footer');
+        // $data['judul'] = 'Register';
+        // $this->view('templates/header', $data);
+        // $this->view('users/register');
+        // $this->view('templates/footer');
     }
     public function auth()
     {

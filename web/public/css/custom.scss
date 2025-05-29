@@ -2,8 +2,37 @@
 // Option A: Include all of Bootstrap
 
 // Include any default variable overrides here (though functions won’t be available)
-$primary: #52ca96;
+
+$primary: #7bb38c;
+$secondary: #aac0bb;
+$body-color: #0d120e;
+$body-bg: #f3f6f4;
+$body-secondary-bg: #e8eae9;
+$body-tertiary-bg: #dbe9df;
+
+$utilities: (
+  "width": (
+    property: width,
+    class: w,
+    responsive: true,
+    values: (
+      25: 25%,
+      33: 33%,
+      50: 50%,
+      66: 66%,
+      75: 75%,
+      100: 100%,
+      auto: auto,
+    ),
+  ),
+);
 
 @import "../node_modules/bootstrap/scss/bootstrap";
 
 // Then add additional custom code here
+
+// "viewport-height": (
+//   property: height,
+//   class: vh,
+//   values: (100: 100vh)
+// ),

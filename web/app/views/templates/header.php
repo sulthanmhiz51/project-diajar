@@ -39,6 +39,7 @@
                             <a class="nav-link active" aria-current="page" href="<?= BASEURL ?>">Home</a>
                             <a class="nav-link" href="<?= BASEURL ?>/mahasiswa">Mahasiswa</a>
                             <a class="nav-link" href="<?= BASEURL ?>/users/profile">Profile</a>
+                            <a class="nav-link" href="<?= BASEURL ?>/courses">Course</a>
                         </div>
                         <a href="<?= BASEURL ?>/users/auth" class="btn btn-outline-primary col-auto">Sign In</a>
                     </div>
@@ -60,6 +61,7 @@
                             <a class="nav-link active" aria-current="page" href="<?= BASEURL ?>">Home</a>
                             <a class="nav-link" href="<?= BASEURL ?>/mahasiswa">Mahasiswa</a>
                             <a class="nav-link" href="<?= BASEURL ?>/users/profile">Profile</a>
+                            <a class="nav-link" href="<?= BASEURL ?>/courses">Course</a>
                         </div>
                         <a href="<?= BASEURL ?>/users/signOut" class="btn btn-outline-danger col-auto">Sign Out</a>
                     </div>

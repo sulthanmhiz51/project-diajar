@@ -3,9 +3,12 @@
 class Database
 {
     private $host   = DB_HOST;
+    private $port = DB_PORT;
     private $user = DB_USER;
     private $pass = DB_PASS;
     private $db_name = DB_NAME;
+    private $ca_cert = CA_CERT;
+
 
     private $dbh;
     private $stmt;
@@ -13,7 +16,7 @@ class Database
     public function __construct()
     {
         // data source name
-        $dsn = 'mysql:host=' . $this->host . ';dbname=' . $this->db_name;
+        $dsn = "mysql:host=" . $this->host . ";port=" . $this->port . ";dbname=" . $this->db_name . ";sslmode=verify-ca;sslrootcert=" . $this->ca_cert;
 
         $option = [
             PDO::ATTR_PERSISTENT => true,

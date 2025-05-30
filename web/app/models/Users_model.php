@@ -146,6 +146,10 @@ class Users_model
             $fileNameCmps = explode(".", $fileName);
             $fileExtension = strtolower(end($fileNameCmps));
 
+            if (!is_dir($uploadDir)) {
+                mkdir($uploadDir, 0777, true); // Create directory if it doesn't exist
+            }
+
             $newFileName = uniqid() . '_' . basename($fileName); // Generate unique name
             $destPath = $uploadDir . $newFileName;
 

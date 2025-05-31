@@ -1,5 +1,5 @@
-<div class="profile d-flex justify-content-center align-items-center h-100">
-    <div class="bg-body-secondary w-75 p-4">
+<div class="profile d-flex justify-content-center align-content-center h-100">
+    <div class="bg-body w-75 p-4">
         <!-- Konten Kursus -->
         <div class="course-header">
             <h1>Pengantar Teknologi Komputer dan Informatika (A)</h1>

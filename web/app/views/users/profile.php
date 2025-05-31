@@ -216,6 +216,7 @@
                             }
                         },
                         error: function(xhr, status, error) {
+                            console.log(xhr.responseText);
                             Swal.fire({
                                 title: "Error!",
                                 text: "An error occured: " + error,

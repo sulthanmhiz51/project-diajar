@@ -300,6 +300,16 @@ class Users_model
     }
     public function deleteUserAndProfile($userId)
     {
+
+        // Fetch old photo filename
+        $this->db->query("SELECT photo_url
+                                    FROM users_profile
+                                    WHERE user_id = :user_id");
+        $this->db->bind('user_id', $userId);
+        $result = $this->db->single();
+        $profilePic = __DIR__ . "/../../public/img/profile/" . $result['photo_url']  ?? null;
+
+
         $query = "DELETE FROM " . $this->table . "
                     WHERE id=:userId;";
 
@@ -312,6 +322,9 @@ class Users_model
                 'message' => 'Failed to delete account.'
             ];
         } else {
+            if (file_exists($profilePic)) {
+                unlink($profilePic); // Delete old photo
+            }
             return [
                 'success' => true,
                 'message' => 'Your account has been deleted.'

@@ -1,4 +1,4 @@
-<div class="profile d-flex justify-content-center allign-content-center h-100">
+<div class="profile d-flex justify-content-center align-content-center h-100">
     <div class="bg-body w-75">
         <div class="container my-5">
             <div class="container">

@@ -7,6 +7,6 @@
   display: none;
 }
 
-.form-control:disabled {
-  background-color: #d9d9d9 !important;
+.btn-primary {
+  --bs-btn-color: #f3f6f4 !important;
 }

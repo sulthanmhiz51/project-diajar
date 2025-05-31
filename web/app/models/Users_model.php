@@ -298,4 +298,24 @@ class Users_model
             return ['success' => false, 'message' => 'Failed to update profile due to a database error.'];
         }
     }
+    public function deleteUserAndProfile($userId)
+    {
+        $query = "DELETE FROM " . $this->table . "
+                    WHERE id=:userId;";
+
+        $this->db->query($query);
+        $this->db->bind('userId', $userId);
+        $this->db->execute();
+        if ($this->db->rowCount() === 0) {
+            return [
+                'success' => false,
+                'message' => 'Failed to delete account.'
+            ];
+        } else {
+            return [
+                'success' => true,
+                'message' => 'Your account has been deleted.'
+            ];
+        }
+    }
 }

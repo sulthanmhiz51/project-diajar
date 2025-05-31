@@ -19,8 +19,9 @@
 </head>
 
 <body>
-    <div class="d-flex flex-column vh-100"
-        style="background-image: url(<?= BASEURL ?>/img/css-pattern-by-magicpattern.png);">
+    <div class="d-flex flex-column min-vh-100"
+        style="background: #AAE5CF;
+background: linear-gradient(135deg, rgba(170, 229, 207, 1) 0%, rgba(195, 231, 204, 1) 50%, rgba(221, 234, 201, 1) 100%);">
 
         <!-- Navbar -->
         <?php if (!isset($_SESSION['username'])) : ?>

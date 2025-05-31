@@ -4,41 +4,41 @@ $role = $_GET['role'] ?? 0;
 if ($role == 0 && !isset($_GET['error'])) :
 ?>
 
-<!-- Role Choosing Modal -->
-<div class="modal fade align-middle" id="roleSelectionModal" data-bs-backdrop="static" data-bs-keyboard="false"
-    tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h1 class="modal-title fs-5" id="staticBackdropLabel">Register New Account</h1>
-            </div>
-            <div class="modal-body">
-                <div class="container">
-                    <a href="<?= BASEURL ?>/users/register?role=1" class="btn btn-primary d-block my-3">Register as
-                        Student</a>
-                    <a href="<?= BASEURL ?>/users/register?role=2" class="btn btn-primary d-block my-3">Register as
-                        Instructor</a>
+    <!-- Role Choosing Modal -->
+    <div class="modal fade align-middle" id="roleSelectionModal" data-bs-backdrop="static" data-bs-keyboard="false"
+        tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="staticBackdropLabel">Register New Account</h1>
                 </div>
-            </div>
-            <div class="modal-footer justify-content-center">
-                <p class=>Already have an account? <a href="<?= BASEURL ?>/users/auth">Sign In</a></p>
+                <div class="modal-body">
+                    <div class="container">
+                        <a href="<?= BASEURL ?>/users/register?role=1" class="btn btn-primary d-block my-3">Register as
+                            Student</a>
+                        <a href="<?= BASEURL ?>/users/register?role=2" class="btn btn-primary d-block my-3">Register as
+                            Instructor</a>
+                    </div>
+                </div>
+                <div class="modal-footer justify-content-center">
+                    <p class=>Already have an account? <a href="<?= BASEURL ?>/users/auth">Sign In</a></p>
+                </div>
             </div>
         </div>
     </div>
-</div>
 
-<script>
-$(document).ready(function() {
-    $("#roleSelectionModal").modal("show");
-});
-</script>
+    <script>
+        $(document).ready(function() {
+            $("#roleSelectionModal").modal("show");
+        });
+    </script>
 
 <?php else : $_SESSION['role'] = $role;
 endif ?>
 
 <!-- Main Register Interface -->
 <div class="container-md d-flex justify-content-center allign-content-center h-100">
-    <div class="bg-body-secondary h-100 w-lg-50 w-75 row flex-column justify-content-center px-xl-5 px-3 py-5">
+    <div class="bg-body h-100 w-lg-50 w-75 row flex-column justify-content-center px-xl-5 px-3 py-5">
         <div class="px-xl-5 py-5">
             <div class="form-header mb-3 py-2 border-bottom border-dark-subtle">
                 <h3 id="registerLabel">Register New Account</h3>
@@ -76,12 +76,12 @@ endif ?>
 
 <!-- Ajax password-match -->
 <script>
-$(function() {
-    $('#password, #password2').on('keyup', function() {
-        var pw = $('#password').val();
-        var pw2 = $('#password2').val();
-        if (pw !== pw2) $('#password-match').removeClass('d-none');
-        else $('#password-match').addClass('d-none');
+    $(function() {
+        $('#password, #password2').on('keyup', function() {
+            var pw = $('#password').val();
+            var pw2 = $('#password2').val();
+            if (pw !== pw2) $('#password-match').removeClass('d-none');
+            else $('#password-match').addClass('d-none');
+        })
     })
-})
 </script>

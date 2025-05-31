@@ -1,18 +1,19 @@
 <div class="profile d-flex justify-content-center allign-content-center h-100">
-    <div class="bg-body-secondary w-75">
-        <div class="container mt-3">
+    <div class="bg-body w-75">
+        <div class="container my-5">
             <div class="container">
                 <form class="row row-cols-1" id="profileForm" action="<?= BASEURL ?>/users/updateProfile" method="post"
                     enctype="multipart/form-data">
-                    <div class="container mt-5 d-flex justify-content-between">
+                    <div class="container mb-2 d-flex justify-content-between">
                         <h2>My Profile</h2>
-                        <button class="btn btn-sm btn-outline-danger my-auto"> Delete Account</button>
+                        <button type="button" id="deleteAccountBtn" class="btn btn-outline-danger my-auto"> Delete
+                            Account</button>
                     </div>
                     <hr>
                     <div class="col my-4">
                         <div class="row justify-content-between py-2">
-                            <div class=" col-6 d-flex">
-                                <div class="col-4 d-flex flex-column justify-content-center">
+                            <div class=" col-lg-6 col-auto d-flex">
+                                <div class="col-lg-4 d-flex flex-column justify-content-center">
                                     <img id="profilePictureDisplay" src="<?= BASEURL ?>/img/no-profile.png"
                                         class="rounded-circle border border-primary mb-1 mx-auto"
                                         style="width: 150px; height: 150px; object-fit: cover;" alt="Profile Avatar" />
@@ -38,7 +39,7 @@
                     </div>
                     <div class="col">
                         <fieldset id="profileFormFields" disabled>
-                            <div class="row row-cols-2 text-start g-3">
+                            <div class="row row-cols-1 row-cols-md-2 text-start g-3">
                                 <div class="col">
                                     <label for="firstName" class="form-label">First Name</label>
                                     <input type="text" id="firstName" name="firstName" class="form-control "
@@ -72,7 +73,7 @@
                                     <input type="email" id="email" name="email" class="form-control"
                                         placeholder="Enter email" aria-label="Email">
                                 </div>
-                                <div class="col-12 mt-4">
+                                <div class="col-md-12 mt-4">
                                     <h5 class="mb-3">Change Password (Optional)</h5>
                                 </div>
                                 <div class="col">
@@ -101,6 +102,7 @@
 
 <script>
     $(function() {
+        const deleteAccountBtn = $('#deleteAccountBtn');
         const profileForm = $('#profileForm');
         const profileFormFields = $('#profileFormFields');
         const editProfileBtn = $('#editProfileBtn');
@@ -177,8 +179,57 @@
         // Initial load of profile data when the page is ready
         loadProfileData();
 
+        // Event listener for Delete Account button
+        deleteAccountBtn.on('click', function() {
+            Swal.fire({
+                title: "Are you sure?",
+                text: "You won't be able to revert this!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#d33",
+                confirmButtonText: "Yes, delete it!"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: window.APP_CONFIG.BASEURL + "/users/deleteAccount",
+                        type: "POST",
+                        dataType: "json",
+                        success: function(response) {
+                            if (response.success) {
+                                Swal.fire({
+                                    title: "Deleted!",
+                                    text: response.message ||
+                                        "Your account has been deleted.",
+                                    icon: "success"
+                                }).then(() => {
+                                    // Sign out and redirect to homepage
+                                    window.location.href = window.APP_CONFIG
+                                        .BASEURL + "/users/signOut";
+                                });
+                            } else {
+                                Swal.fire({
+                                    title: "Error!",
+                                    text: response.message ||
+                                        "Failed to delete your account.",
+                                    icon: "error"
+                                });
+                            }
+                        },
+                        error: function(xhr, status, error) {
+                            Swal.fire({
+                                title: "Error!",
+                                text: "An error occured: " + error,
+                                icon: "error"
+                            })
+                        }
+                    });
+                }
+            });
+        })
+
         // Event listener for Edit button
         editProfileBtn.on('click', function() {
+            deleteAccountBtn.addClass('d-none');
             profileFormFields.prop('disabled', false);
             profilePictureInput.removeClass('d-none');
             discardChangesBtn.removeClass('d-none');
@@ -195,6 +246,7 @@
             }).then((result) => {
                 if (result.isConfirmed) {
 
+                    deleteAccountBtn.removeClass('d-none');
                     profileFormFields.prop('disabled', true);
                     profilePictureInput.addClass('d-none');
                     discardChangesBtn.addClass('d-none');
@@ -280,6 +332,7 @@
                         });
 
                         // Re-disable form fields and hide/show buttons
+                        deleteAccountBtn.removeClass('d-none');
                         profileFormFields.prop('disabled', true);
                         profilePictureInput.addClass('d-none');
                         discardChangesBtn.addClass('d-none');

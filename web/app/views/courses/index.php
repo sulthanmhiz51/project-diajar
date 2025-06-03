@@ -1,13 +1,13 @@
 <div class="profile d-flex justify-content-center align-content-center h-100">
-    <div class="bg-body w-75">
+    <div class="bg-body w-75 px-5"> <!-- Added px-5 for horizontal padding -->
 
         <div class="container my-5">
             <h1 class="mb-5 text-center" style="font-size: 2.5rem;">Daftar Kursus</h1>
-            <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+            <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-5">
 
                 <!-- Course 1 - Kalkulus -->
-                <div class="col">
-                    <div class="card">
+                <div class="col mb-5">
+                    <div class="card h-100">
                         <img src="https://img.freepik.com/free-vector/numbers-background_23-2147505581.jpg"
                             class="card-img-top" alt="Kalkulus" style="height: 180px; object-fit: cover;">
                         <div class="card-body">
@@ -23,8 +23,8 @@
                 </div>
 
                 <!-- Course 2 - Organisasi Komputer -->
-                <div class="col">
-                    <div class="card">
+                <div class="col mb-5">
+                    <div class="card h-100">
                         <img src="https://img.freepik.com/free-vector/computer-engineering-isometric-icon_1284-64045.jpg"
                             class="card-img-top" alt="Organisasi Komputer" style="height: 180px; object-fit: cover;">
                         <div class="card-body">
@@ -40,8 +40,8 @@
                 </div>
 
                 <!-- Course 3 - Struktur Data -->
-                <div class="col">
-                    <div class="card">
+                <div class="col mb-5">
+                    <div class="card h-100">
                         <img src="https://img.freepik.com/free-vector/data-storage-network-concept-illustration_114360-7402.jpg"
                             class="card-img-top" alt="Struktur Data" style="height: 180px; object-fit: cover;">
                         <div class="card-body">
@@ -57,8 +57,8 @@
                 </div>
 
                 <!-- Course 4 - Sistem Database -->
-                <div class="col">
-                    <div class="card">
+                <div class="col mb-5">
+                    <div class="card h-100">
                         <img src="https://img.freepik.com/free-vector/database-concept-illustration_114360-632.jpg"
                             class="card-img-top" alt="Sistem Database" style="height: 180px; object-fit: cover;">
                         <div class="card-body">
@@ -74,8 +74,8 @@
                 </div>
 
                 <!-- Course 5 - Logika Informatika -->
-                <div class="col">
-                    <div class="card">
+                <div class="col mb-5">
+                    <div class="card h-100">
                         <img src="https://img.freepik.com/free-vector/logic-concept-illustration_114360-8095.jpg"
                             class="card-img-top" alt="Logika Informatika" style="height: 180px; object-fit: cover;">
                         <div class="card-body">
@@ -91,8 +91,8 @@
                 </div>
 
                 <!-- Course 6 - Agama -->
-                <div class="col">
-                    <div class="card">
+                <div class="col mb-5">
+                    <div class="card h-100">
                         <img src="https://img.freepik.com/free-vector/hand-drawn-islamic-background_23-2149071848.jpg"
                             class="card-img-top" alt="Pendidikan Agama" style="height: 180px; object-fit: cover;">
                         <div class="card-body">

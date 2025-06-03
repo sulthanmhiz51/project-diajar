@@ -8,10 +8,7 @@ class Users extends Controller
     ];
     public function index()
     {
-        // $data['judul'] = 'Register';
-        // $this->view('templates/header', $data);
-        // $this->view('users/register');
-        // $this->view('templates/footer');
+        $this->profile();
     }
     public function auth()
     {
@@ -158,5 +155,19 @@ class Users extends Controller
             echo json_encode(['success' => false, 'message' => $updateResult['message']]);
         }
         exit;
+    }
+
+    public function deleteAccount()
+    {
+        // Ensure user ID is available from session
+        $userId = $_SESSION['user_id'] ?? null;
+        if (!$userId) {
+            echo json_encode(['success' => false, 'message' => 'User not logged in.']);
+            exit;
+        }
+
+        $result = $this->model('Users_model')->deleteUserAndProfile($_SESSION['user_id']);
+
+        echo json_encode($result);
     }
 }

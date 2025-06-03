@@ -146,6 +146,10 @@ class Users_model
             $fileNameCmps = explode(".", $fileName);
             $fileExtension = strtolower(end($fileNameCmps));
 
+            if (!is_dir($uploadDir)) {
+                mkdir($uploadDir, 0777, true); // Create directory if it doesn't exist
+            }
+
             $newFileName = uniqid() . '_' . basename($fileName); // Generate unique name
             $destPath = $uploadDir . $newFileName;
 
@@ -292,6 +296,39 @@ class Users_model
             // return ['success' => false, 'message' => 'Error: ' . $e->getMessage()];
 
             return ['success' => false, 'message' => 'Failed to update profile due to a database error.'];
+        }
+    }
+    public function deleteUserAndProfile($userId)
+    {
+
+        // Fetch old photo filename
+        $this->db->query("SELECT photo_url
+                                    FROM users_profile
+                                    WHERE user_id = :user_id");
+        $this->db->bind('user_id', $userId);
+        $result = $this->db->single();
+        $profilePic = __DIR__ . "/../../public/img/profile/" . $result['photo_url']  ?? null;
+
+
+        $query = "DELETE FROM " . $this->table . "
+                    WHERE id=:userId;";
+
+        $this->db->query($query);
+        $this->db->bind('userId', $userId);
+        $this->db->execute();
+        if ($this->db->rowCount() === 0) {
+            return [
+                'success' => false,
+                'message' => 'Failed to delete account.'
+            ];
+        } else {
+            if (file_exists($profilePic)) {
+                unlink($profilePic); // Delete old photo
+            }
+            return [
+                'success' => true,
+                'message' => 'Your account has been deleted.'
+            ];
         }
     }
 }

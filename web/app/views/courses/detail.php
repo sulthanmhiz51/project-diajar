@@ -1,5 +1,5 @@
-<div class="profile d-flex justify-content-center align-items-center h-100">
-    <div class="bg-body-secondary w-75 px-5 py-5" style="padding: 8rem 7rem;">
+<div class="profile d-flex justify-content-center align-content-center h-100">
+    <div class="bg-body w-75 p-5">
         <!-- Konten Kursus -->
         <div class="course-header">
             <h1>Pengantar Teknologi Komputer dan Informatika (A)</h1>

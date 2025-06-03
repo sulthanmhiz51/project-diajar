@@ -9,4 +9,14 @@ class Courses extends Controller
         $this->view('courses/index');
         $this->view('templates/footer');
     }
+
+    public function detail()
+    {
+    $data['judul'] = 'Detail Kursus';
+
+    $this->view('templates/header', $data);
+    $this->view('courses/detail', $data);
+    $this->view('templates/footer');
+    }
+
 }

@@ -1,113 +1,98 @@
+<?php
+$currPage = $_GET['page'] ?? 1;
+$pagesCount = $data['pagesCount'];
+$itemsCount = $data['itemsCount'];
+$cards = $data['cards'];
+?>
 <div class="profile d-flex justify-content-center align-content-center h-100">
-    <div class="bg-body w-75 px-5"> <!-- Added px-5 for horizontal padding -->
-
-        <div class="container my-5">
-            <h1 class="mb-5 text-center" style="font-size: 2.5rem;">Daftar Kursus</h1>
-            <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-5">
-
-                <!-- Course 1 - Kalkulus -->
-                <div class="col mb-5">
+    <div class="bg-body w-75 px-5">
+        <!-- Added px-5 for horizontal padding -->
+        <div class="container my-5 d-flex flex-column">
+            <h1 class="mb-0 text-center" style="font-size: 2.5rem;">Daftar Kursus</h1>
+            <a href="<?= BASEURL ?>/courses/create" class="btn btn-primary mb-4 ms-auto">Create New Course</a>
+            <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+                <!-- Generate course cards from db -->
+                <?php for ($i = 0; $i < $itemsCount; $i++) : ?>
+                <!-- init card data -->
+                <?php
+                    $card = $cards["$i"];
+                    $courseId = $card['id'];
+                    $title = $card['title'];
+                    $author = $card['first_name'] || $card['last_name'] ? $card['first_name'] . ' ' . $card['last_name'] : $card['username'];
+                    $thumbnail = $card['thumbnail_url'] ?? 'default-thumbnail.webp';
+                    ?>
+                <div class="col mb-4">
                     <div class="card h-100">
-                        <img src="https://img.freepik.com/free-vector/numbers-background_23-2147505581.jpg"
-                            class="card-img-top" alt="Kalkulus" style="height: 180px; object-fit: cover;">
+                        <img src="<?= BASEURL ?>/img/thumbnail/<?= $thumbnail ?>" class="card-img-top"
+                            alt="<?= $title ?>" style="height: 180px; object-fit: cover;">
                         <div class="card-body">
-                            <h5 class="card-title" style="font-size: 1.4rem;">Kalkulus Dasar </h5>
-                            <p class="author text-muted" style="font-size: 1.1rem;">Author: Dr. Ahmad Faisal</p>
+                            <h5 class="card-title" style="font-size: 1.4rem;"><?= $title ?></h5>
+                            <p class="author text-muted" style="font-size: 1.1rem;">Author: <?= $author ?></p>
                         </div>
                         <div class="card-footer bg-transparent border-0 text-center pb-4">
                             <button class="btn btn-primary w-75 mb-2" style="font-size: 1.1rem;">Enrol me in this
                                 course</button><br>
-                            <button class="btn btn-outline-primary w-75" style="font-size: 1.1rem;">Description</button>
+                            <a href="<?= BASEURL ?>/courses/detail?courseId=<?= $courseId ?>"
+                                class="btn btn-outline-primary w-75">Details</a>
                         </div>
                     </div>
                 </div>
-
-                <!-- Course 2 - Organisasi Komputer -->
-                <div class="col mb-5">
-                    <div class="card h-100">
-                        <img src="https://img.freepik.com/free-vector/computer-engineering-isometric-icon_1284-64045.jpg"
-                            class="card-img-top" alt="Organisasi Komputer" style="height: 180px; object-fit: cover;">
-                        <div class="card-body">
-                            <h5 class="card-title" style="font-size: 1.4rem;">Organisasi Komputer </h5>
-                            <p class="author text-muted" style="font-size: 1.1rem;">Author: Dr. Rina Wijaya</p>
-                        </div>
-                        <div class="card-footer bg-transparent border-0 text-center pb-4">
-                            <button class="btn btn-primary w-75 mb-2" style="font-size: 1.1rem;">Enrol me in this
-                                course</button><br>
-                            <button class="btn btn-outline-primary w-75" style="font-size: 1.1rem;">Description</button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Course 3 - Struktur Data -->
-                <div class="col mb-5">
-                    <div class="card h-100">
-                        <img src="https://img.freepik.com/free-vector/data-storage-network-concept-illustration_114360-7402.jpg"
-                            class="card-img-top" alt="Struktur Data" style="height: 180px; object-fit: cover;">
-                        <div class="card-body">
-                            <h5 class="card-title" style="font-size: 1.4rem;">Struktur Data </h5>
-                            <p class="author text-muted" style="font-size: 1.1rem;">Author: Dr. Bambang Setiawan</p>
-                        </div>
-                        <div class="card-footer bg-transparent border-0 text-center pb-4">
-                            <button class="btn btn-primary w-75 mb-2" style="font-size: 1.1rem;">Enrol me in this
-                                course</button><br>
-                            <button class="btn btn-outline-primary w-75" style="font-size: 1.1rem;">Description</button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Course 4 - Sistem Database -->
-                <div class="col mb-5">
-                    <div class="card h-100">
-                        <img src="https://img.freepik.com/free-vector/database-concept-illustration_114360-632.jpg"
-                            class="card-img-top" alt="Sistem Database" style="height: 180px; object-fit: cover;">
-                        <div class="card-body">
-                            <h5 class="card-title" style="font-size: 1.4rem;">Sistem Database </h5>
-                            <p class="author text-muted" style="font-size: 1.1rem;">Author: Dr. Citra Dewi</p>
-                        </div>
-                        <div class="card-footer bg-transparent border-0 text-center pb-4">
-                            <button class="btn btn-primary w-75 mb-2" style="font-size: 1.1rem;">Enrol me in this
-                                course</button><br>
-                            <button class="btn btn-outline-primary w-75" style="font-size: 1.1rem;">Description</button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Course 5 - Logika Informatika -->
-                <div class="col mb-5">
-                    <div class="card h-100">
-                        <img src="https://img.freepik.com/free-vector/logic-concept-illustration_114360-8095.jpg"
-                            class="card-img-top" alt="Logika Informatika" style="height: 180px; object-fit: cover;">
-                        <div class="card-body">
-                            <h5 class="card-title" style="font-size: 1.4rem;">Logika Informatika </h5>
-                            <p class="author text-muted" style="font-size: 1.1rem;">Author: Dr. Arif Rahman</p>
-                        </div>
-                        <div class="card-footer bg-transparent border-0 text-center pb-4">
-                            <button class="btn btn-primary w-75 mb-2" style="font-size: 1.1rem;">Enrol me in this
-                                course</button><br>
-                            <button class="btn btn-outline-primary w-75" style="font-size: 1.1rem;">Description</button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Course 6 - Agama -->
-                <div class="col mb-5">
-                    <div class="card h-100">
-                        <img src="https://img.freepik.com/free-vector/hand-drawn-islamic-background_23-2149071848.jpg"
-                            class="card-img-top" alt="Pendidikan Agama" style="height: 180px; object-fit: cover;">
-                        <div class="card-body">
-                            <h5 class="card-title" style="font-size: 1.4rem;">Pendidikan Agama </h5>
-                            <p class="author text-muted" style="font-size: 1.1rem;">Author: Dr. Muhammad Ali</p>
-                        </div>
-                        <div class="card-footer bg-transparent border-0 text-center pb-4">
-                            <button class="btn btn-primary w-75 mb-2" style="font-size: 1.1rem;">Enrol me in this
-                                course</button><br>
-                            <button class="btn btn-outline-primary w-75" style="font-size: 1.1rem;">Description</button>
-                        </div>
-                    </div>
-                </div>
-
+                <?php endfor; ?>
             </div>
+            <nav aria-label="Page navigation example">
+                <ul class="pagination justify-content-center">
+                    <li class="page-item">
+                        <a id="prev" class="page-link" href="?page=<?= $currPage - 1 ?>" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                    <?php for ($i = 1; $i <= $pagesCount; $i++): ?>
+                    <li id="<?= $i ?>" class="page-item"><a class="page-link" href="?page=<?= $i ?>"><?= $i ?></a></li>
+                    <?php endfor; ?>
+                    <li class="page-item">
+                        <a id="next" class="page-link" href="?page=<?= $currPage + 1 ?>" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
         </div>
     </div>
 </div>
+<script>
+var currPage = <?= $currPage ?>;
+var currentPageNumber = parseInt(currPage);
+var totalPages = <?= $pagesCount ?>;
+
+$('#' + currPage).addClass('active');
+
+// Logic to disable the 'Previous' button
+if (currentPageNumber <= 1) {
+    // Add Bootstrap's 'disabled' class to the parent <li> element
+    $('#prev').parent().addClass('disabled');
+    // Make the link non-focusable for users navigating with keyboard
+    $('#prev').attr('tabindex', '-1');
+    // For accessibility: indicate that the element is disabled
+    $('#prev').attr('aria-disabled', 'true');
+} else {
+    // Ensure it's not disabled if currPage is greater than 1
+    $('#prev').parent().removeClass('disabled');
+    $('#prev').removeAttr('tabindex'); // Re-enable focusability
+    $('#prev').attr('aria-disabled', 'false');
+}
+
+// Logic to disable the 'Next' button
+if (currentPageNumber >= totalPages) {
+    // Add Bootstrap's 'disabled' class to the parent <li> element
+    $('#next').parent().addClass('disabled');
+    // Make the link non-focusable
+    $('#next').attr('tabindex', '-1');
+    // For accessibility
+    $('#next').attr('aria-disabled', 'true');
+} else {
+    // Ensure it's not disabled if currPage is less than totalPages
+    $('#next').parent().removeClass('disabled');
+    $('#next').removeAttr('tabindex'); // Re-enable focusability
+    $('#next').attr('aria-disabled', 'false');
+}
+</script>

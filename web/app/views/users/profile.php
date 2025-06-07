@@ -101,265 +101,266 @@
 </div>
 
 <script>
-    $(function() {
-        const deleteAccountBtn = $('#deleteAccountBtn');
-        const profileForm = $('#profileForm');
-        const profileFormFields = $('#profileFormFields');
-        const editProfileBtn = $('#editProfileBtn');
-        const discardChangesBtn = $('#discardChangesBtn');
-        const saveProfileBtn = $('#saveProfileBtn');
-        const profilePictureInput = $('#profilePictureInput');
-        const profilePictureDisplay = $('#profilePictureDisplay');
-        const profileName = $('#profileName');
-        const profileEmail = $('#profileEmail');
+$(function() {
+    const deleteAccountBtn = $('#deleteAccountBtn');
+    const profileForm = $('#profileForm');
+    const profileFormFields = $('#profileFormFields');
+    const editProfileBtn = $('#editProfileBtn');
+    const discardChangesBtn = $('#discardChangesBtn');
+    const saveProfileBtn = $('#saveProfileBtn');
+    const profilePictureInput = $('#profilePictureInput');
+    const profilePictureDisplay = $('#profilePictureDisplay');
+    const profileName = $('#profileName');
+    const profileEmail = $('#profileEmail');
 
-        function isImageURLValid(url, callback) {
-            const img = new Image();
-            img.onload = function() {
-                callback(true);
-            };
-            img.onerror = function() {
-                callback(false);
-            };
-            img.src = url;
-        }
+    function isImageURLValid(url, callback) {
+        const img = new Image();
+        img.onload = function() {
+            callback(true);
+        };
+        img.onerror = function() {
+            callback(false);
+        };
+        img.src = url;
+    }
 
-        function loadProfileData() {
-            $.ajax({
-                url: window.APP_CONFIG.BASEURL + '/users/getProfileDataAjax',
-                method: 'GET',
-                dataType: 'json',
-                success: function(response) {
-                    if (response.success) {
-                        const data = response.data;
+    function loadProfileData() {
+        $.ajax({
+            url: window.APP_CONFIG.BASEURL + '/users/getProfileDataAjax',
+            method: 'GET',
+            dataType: 'json',
+            success: function(response) {
+                if (response.success) {
+                    const data = response.data;
 
-                        // Populate header info
-                        profileName.text(data.first_name + ' ' + data.last_name);
-                        profileEmail.text(data.email);
-                        isImageURLValid(data.profilePictureURL, function(isValid) {
-                            if (isValid) {
-                                profilePictureDisplay.attr('src', data.profilePictureURL);
-                            } else {
-                                profilePictureDisplay.attr('src', window.APP_CONFIG.BASEURL +
-                                    '/img/no-profile.png'); // fallback image
-                            }
-                        });
-
-                        // Populate form fields
-                        $('#firstName').val(data.first_name);
-                        $('#lastName').val(data.last_name);
-                        $('#birthdate').val(data.birthdate);
-                        $('#phoneNum').val(data.phone_num);
-                        $('#username').val(data.username);
-                        $('#email').val(data.email);
-
-                        //Clear password fields on load
-                        $('#currentPassword').val('');
-                        $('#newPassword').val('');
-                        $('#confirmNewPassword').val('');
-                    } else {
-                        // Use SweetAlert2 for better user experience
-                        if (typeof Swal !== 'undefined') {
-                            Swal.fire('Error!', response.message, 'error');
+                    // Populate header info
+                    profileName.text(data.first_name + ' ' + data.last_name);
+                    profileEmail.text(data.email);
+                    isImageURLValid(data.profilePictureURL, function(isValid) {
+                        if (isValid) {
+                            profilePictureDisplay.attr('src', data.profilePictureURL);
                         } else {
-                            alert('Error: ' + response.message);
-                        }
-                    }
-                },
-                error: function(xhr, status, error) {
-                    if (typeof Swal !== 'undefined') {
-                        Swal.fire('AJAX Error!', 'Could not load profile data: ' + error, 'error');
-                    } else {
-                        alert('AJAX Error: Could not load profile data.');
-                    }
-                }
-            });
-        }
-
-        // Initial load of profile data when the page is ready
-        loadProfileData();
-
-        // Event listener for Delete Account button
-        deleteAccountBtn.on('click', function() {
-            Swal.fire({
-                title: "Are you sure?",
-                text: "You won't be able to revert this!",
-                icon: "warning",
-                showCancelButton: true,
-                confirmButtonColor: "#d33",
-                confirmButtonText: "Yes, delete it!"
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    $.ajax({
-                        url: window.APP_CONFIG.BASEURL + "/users/deleteAccount",
-                        type: "POST",
-                        dataType: "json",
-                        success: function(response) {
-                            if (response.success) {
-                                Swal.fire({
-                                    title: "Deleted!",
-                                    text: response.message ||
-                                        "Your account has been deleted.",
-                                    icon: "success"
-                                }).then(() => {
-                                    // Sign out and redirect to homepage
-                                    window.location.href = window.APP_CONFIG
-                                        .BASEURL + "/users/signOut";
-                                });
-                            } else {
-                                Swal.fire({
-                                    title: "Error!",
-                                    text: response.message ||
-                                        "Failed to delete your account.",
-                                    icon: "error"
-                                });
-                            }
-                        },
-                        error: function(xhr, status, error) {
-                            console.log(xhr.responseText);
-                            Swal.fire({
-                                title: "Error!",
-                                text: "An error occured: " + error,
-                                icon: "error"
-                            })
+                            profilePictureDisplay.attr('src', window.APP_CONFIG.BASEURL +
+                                '/img/no-profile.png'); // fallback image
                         }
                     });
+
+                    // Populate form fields
+                    $('#firstName').val(data.first_name);
+                    $('#lastName').val(data.last_name);
+                    $('#birthdate').val(data.birthdate);
+                    $('#phoneNum').val(data.phone_num);
+                    $('#username').val(data.username);
+                    $('#email').val(data.email);
+
+                    //Clear password fields on load
+                    $('#currentPassword').val('');
+                    $('#newPassword').val('');
+                    $('#confirmNewPassword').val('');
+                } else {
+                    // Use SweetAlert2 for better user experience
+                    if (typeof Swal !== 'undefined') {
+                        Swal.fire('Error!', response.message, 'error');
+                    } else {
+                        alert('Error: ' + response.message);
+                    }
                 }
-            });
-        })
+            },
+            error: function(xhr, status, error) {
+                console.log(xhr.responseText);
+                if (typeof Swal !== 'undefined') {
+                    Swal.fire('AJAX Error!', 'Could not load profile data: ' + error, 'error');
+                } else {
+                    alert('AJAX Error: Could not load profile data.');
+                }
+            }
+        });
+    }
 
-        // Event listener for Edit button
-        editProfileBtn.on('click', function() {
-            deleteAccountBtn.addClass('d-none');
-            profileFormFields.prop('disabled', false);
-            profilePictureInput.removeClass('d-none');
-            discardChangesBtn.removeClass('d-none');
-            saveProfileBtn.removeClass('d-none');
-            editProfileBtn.addClass('d-none');
-        })
+    // Initial load of profile data when the page is ready
+    loadProfileData();
 
-        // Event listener for Discard Changes button
-        discardChangesBtn.on('click', function() {
-            Swal.fire({
-                title: "Discard changes you made?",
-                showCancelButton: true,
-                confirmButtonText: "Yes"
-            }).then((result) => {
-                if (result.isConfirmed) {
+    // Event listener for Delete Account button
+    deleteAccountBtn.on('click', function() {
+        Swal.fire({
+            title: "Are you sure?",
+            text: "You won't be able to revert this!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#d33",
+            confirmButtonText: "Yes, delete it!"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    url: window.APP_CONFIG.BASEURL + "/users/deleteAccount",
+                    type: "POST",
+                    dataType: "json",
+                    success: function(response) {
+                        if (response.success) {
+                            Swal.fire({
+                                title: "Deleted!",
+                                text: response.message ||
+                                    "Your account has been deleted.",
+                                icon: "success"
+                            }).then(() => {
+                                // Sign out and redirect to homepage
+                                window.location.href = window.APP_CONFIG
+                                    .BASEURL + "/users/signOut";
+                            });
+                        } else {
+                            Swal.fire({
+                                title: "Error!",
+                                text: response.message ||
+                                    "Failed to delete your account.",
+                                icon: "error"
+                            });
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        console.log(xhr.responseText);
+                        Swal.fire({
+                            title: "Error!",
+                            text: "An error occured: " + error,
+                            icon: "error"
+                        })
+                    }
+                });
+            }
+        });
+    })
 
+    // Event listener for Edit button
+    editProfileBtn.on('click', function() {
+        deleteAccountBtn.addClass('d-none');
+        profileFormFields.prop('disabled', false);
+        profilePictureInput.removeClass('d-none');
+        discardChangesBtn.removeClass('d-none');
+        saveProfileBtn.removeClass('d-none');
+        editProfileBtn.addClass('d-none');
+    })
+
+    // Event listener for Discard Changes button
+    discardChangesBtn.on('click', function() {
+        Swal.fire({
+            title: "Discard changes you made?",
+            showCancelButton: true,
+            confirmButtonText: "Yes"
+        }).then((result) => {
+            if (result.isConfirmed) {
+
+                deleteAccountBtn.removeClass('d-none');
+                profileFormFields.prop('disabled', true);
+                profilePictureInput.addClass('d-none');
+                discardChangesBtn.addClass('d-none');
+                saveProfileBtn.addClass('d-none');
+                editProfileBtn.removeClass('d-none');
+                loadProfileData();
+
+            }
+        });
+
+    })
+
+    // Event listener for form submission (Save button)
+    profileForm.on('submit', function(e) {
+        e.preventDefault(); // Prevent default formm submission
+
+        // Basic client-side password validation
+        const newPassword = $('#newPassword').val();
+        const confirmNewPassword = $('#confirmNewPassword').val();
+        const currentPassword = $('#currentPassword').val();
+
+        if (newPassword !== '' || currentPassword !== '') { // If user is attempting to change password
+            if (newPassword === '') {
+                if (typeof Swal !== 'undefined') {
+                    Swal.fire('Validation Error', 'New password cannot be empty if changing password.',
+                        'warning');
+                } else {
+                    alert('New password cannot be empty if changing password.');
+                }
+                return;
+            }
+            if (newPassword !== confirmNewPassword) {
+                if (typeof Swal !== 'undefined') {
+                    Swal.fire('Validation Error', 'New password and confirmation do not match.',
+                        'warning');
+                } else {
+                    alert('New password and confirmation do not match.');
+                }
+                return;
+            }
+            if (currentPassword === '') {
+                if (typeof Swal !== 'undefined') {
+                    Swal.fire('Validation Error', 'Current password is required to change password.',
+                        'warning');
+                } else {
+                    alert('Current password is required to change password.');
+                }
+                return;
+            }
+        }
+
+        // Create FormData object to send both text and file data
+        const formData = new FormData(this);
+
+        $.ajax({
+            url: profileForm.attr('action'),
+            method: 'POST',
+            data: formData,
+            processData: false, // Important: Don't process the data
+            contentType: false, // Important: Don't set content type (FormData does it)
+            dataType: 'json',
+            success: function(response) {
+                if (response.success) {
+                    if (typeof Swal !== 'undefined') {
+                        Swal.fire('Success!', response.message, 'success');
+                    } else {
+                        alert('Success: ' + response.message);
+                    }
+
+                    // Update displayed info with new data from response
+                    profileName.text(response.updatedData.first_name + ' ' + response
+                        .updatedData.last_name);
+                    profileEmail.text(response.updatedData.email);
+                    isImageURLValid(response.profilePictureURL, function(isValid) {
+                        if (isValid) {
+                            profilePictureDisplay.attr('src', response
+                                .profilePictureURL);
+                        } else {
+                            profilePictureDisplay.attr('src', window.APP_CONFIG
+                                .BASEURL +
+                                '/img/no-profile.png'); // fallback image
+                        }
+                    });
+
+                    // Re-disable form fields and hide/show buttons
                     deleteAccountBtn.removeClass('d-none');
                     profileFormFields.prop('disabled', true);
                     profilePictureInput.addClass('d-none');
                     discardChangesBtn.addClass('d-none');
                     saveProfileBtn.addClass('d-none');
                     editProfileBtn.removeClass('d-none');
-                    loadProfileData();
 
-                }
-            });
-
-        })
-
-        // Event listener for form submission (Save button)
-        profileForm.on('submit', function(e) {
-            e.preventDefault(); // Prevent default formm submission
-
-            // Basic client-side password validation
-            const newPassword = $('#newPassword').val();
-            const confirmNewPassword = $('#confirmNewPassword').val();
-            const currentPassword = $('#currentPassword').val();
-
-            if (newPassword !== '' || currentPassword !== '') { // If user is attempting to change password
-                if (newPassword === '') {
+                    // Clear password fields after successful update
+                    $('#currentPassword').val('');
+                    $('#newPassword').val('');
+                    $('#confirmNewPassword').val('');
+                } else {
                     if (typeof Swal !== 'undefined') {
-                        Swal.fire('Validation Error', 'New password cannot be empty if changing password.',
-                            'warning');
+                        Swal.fire('Error!', response.message, 'error');
                     } else {
-                        alert('New password cannot be empty if changing password.');
+                        alert('Error: ' + response.message);
                     }
-                    return;
                 }
-                if (newPassword !== confirmNewPassword) {
-                    if (typeof Swal !== 'undefined') {
-                        Swal.fire('Validation Error', 'New password and confirmation do not match.',
-                            'warning');
-                    } else {
-                        alert('New password and confirmation do not match.');
-                    }
-                    return;
-                }
-                if (currentPassword === '') {
-                    if (typeof Swal !== 'undefined') {
-                        Swal.fire('Validation Error', 'Current password is required to change password.',
-                            'warning');
-                    } else {
-                        alert('Current password is required to change password.');
-                    }
-                    return;
+            },
+            error: function(xhr, status, error) {
+                if (typeof Swal !== 'undefined') {
+                    Swal.fire('AJAX Error!', 'Could not update profile: ' + error, 'error');
+                } else {
+                    alert('AJAX Error: Could not update profile.');
                 }
             }
-
-            // Create FormData object to send both text and file data
-            const formData = new FormData(this);
-
-            $.ajax({
-                url: profileForm.attr('action'),
-                method: 'POST',
-                data: formData,
-                processData: false, // Important: Don't process the data
-                contentType: false, // Important: Don't set content type (FormData does it)
-                dataType: 'json',
-                success: function(response) {
-                    if (response.success) {
-                        if (typeof Swal !== 'undefined') {
-                            Swal.fire('Success!', response.message, 'success');
-                        } else {
-                            alert('Success: ' + response.message);
-                        }
-
-                        // Update displayed info with new data from response
-                        profileName.text(response.updatedData.first_name + ' ' + response
-                            .updatedData.last_name);
-                        profileEmail.text(response.updatedData.email);
-                        isImageURLValid(response.profilePictureURL, function(isValid) {
-                            if (isValid) {
-                                profilePictureDisplay.attr('src', response
-                                    .profilePictureURL);
-                            } else {
-                                profilePictureDisplay.attr('src', window.APP_CONFIG
-                                    .BASEURL +
-                                    '/img/no-profile.png'); // fallback image
-                            }
-                        });
-
-                        // Re-disable form fields and hide/show buttons
-                        deleteAccountBtn.removeClass('d-none');
-                        profileFormFields.prop('disabled', true);
-                        profilePictureInput.addClass('d-none');
-                        discardChangesBtn.addClass('d-none');
-                        saveProfileBtn.addClass('d-none');
-                        editProfileBtn.removeClass('d-none');
-
-                        // Clear password fields after successful update
-                        $('#currentPassword').val('');
-                        $('#newPassword').val('');
-                        $('#confirmNewPassword').val('');
-                    } else {
-                        if (typeof Swal !== 'undefined') {
-                            Swal.fire('Error!', response.message, 'error');
-                        } else {
-                            alert('Error: ' + response.message);
-                        }
-                    }
-                },
-                error: function(xhr, status, error) {
-                    if (typeof Swal !== 'undefined') {
-                        Swal.fire('AJAX Error!', 'Could not update profile: ' + error, 'error');
-                    } else {
-                        alert('AJAX Error: Could not update profile.');
-                    }
-                }
-            });
         });
     });
+});
 </script>

@@ -1,20 +1,30 @@
+<?php
+$course = $data['course'];
+$thumbnail = $course['thumbnail_url'] ?? 'default-thumbnail.webp';
+$title = $course['title'];
+$createDate = $course['created_at'];
+$author = $course['first_name'] || $course['last_name'] ? $course['first_name'] . ' ' . $course['last_name'] : $course['instr_uname'];
+$desc = $course['description'];
+var_dump($course)
+?>
+
 <div class="profile d-flex justify-content-center align-content-center h-100">
     <div class="bg-body w-75 p-5">
         <!-- Konten Kursus -->
         <div class="course-header">
-            <h1>Pengantar Teknologi Komputer dan Informatika (A)</h1>
-            <img src="path/to/thumbnail.jpg" alt="Thumbnail" style="width: 50px; height: auto; margin-left: 10px; vertical-align: middle; display: inline-block;">
-            <div class="course-meta">
-                <span>Kode Prodi: 140810</span>
-                <span>SKS: 2</span>
-                <span>Kelas: A</span>
-            </div>
-            <p>Course start date: Monday, 19 August 2024</p>
+            <img src="<?= BASEURL ?>/img/thumbnail/<?= $thumbnail ?>" alt="Thumbnail" class="w-100 mb-4"
+                style="height: 250px; object-fit: cover;">
+            <h1><?= $title ?></h1>
+            <p class="m-0">Author: <?= $author ?> </p>
+            <p>Created at: <?= $createDate ?> </p>
         </div>
 
         <hr>
 
-        <h2>General</h2>
+        <h2>Descriptions</h2>
+
+        <?= $desc ?>
+
         <h3 class="mt-4">Announcements</h3>
 
         <!-- Kuliah 1 -->
@@ -42,7 +52,11 @@
         </div>
 
         <div class="mt-5 text-center">
-            <a href="<?= BASEURL ?>/courses" class="btn btn-outline-secondary">Kembali ke Daftar Kursus</a>
+            <a href="<?= BASEURL ?>/courses" class="btn btn-outline-primary">Kembali ke Daftar Kursus</a>
         </div>
     </div>
 </div>
+
+<script>
+    document.title = "<?= $title ?>"
+</script>

@@ -8,9 +8,11 @@ $cards = $data['cards'];
     <div class="bg-body w-75 px-5">
         <!-- Added px-5 for horizontal padding -->
         <div class="container my-5 d-flex flex-column">
-            <h1 class="mb-0 text-center" style="font-size: 2.5rem;">Daftar Kursus</h1>
-            <a href="<?= BASEURL ?>/courses/create" class="btn btn-primary mb-4 ms-auto">Create New Course</a>
-            <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+            <h1 class="text-center" style="font-size: 2.5rem;">Daftar Kursus</h1>
+            <?php if (isset($_SESSION['user_role']) && $_SESSION['user_role'] === 'instructor') : ?>
+            <a href="<?= BASEURL ?>/courses/create" class="btn btn-primary ms-auto">Create New Course</a>
+            <?php endif; ?>
+            <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 mt-1">
                 <!-- Generate course cards from db -->
                 <?php for ($i = 0; $i < $itemsCount; $i++) : ?>
                 <!-- init card data -->
@@ -22,7 +24,7 @@ $cards = $data['cards'];
                     $thumbnail = $card['thumbnail_url'] ?? 'default-thumbnail.webp';
                     ?>
                 <div class="col mb-4">
-                    <div class="card h-100">
+                    <div class="card bg-light h-100">
                         <img src="<?= BASEURL ?>/img/thumbnail/<?= $thumbnail ?>" class="card-img-top"
                             alt="<?= $title ?>" style="height: 180px; object-fit: cover;">
                         <div class="card-body">
@@ -30,8 +32,9 @@ $cards = $data['cards'];
                             <p class="author text-muted" style="font-size: 1.1rem;">Author: <?= $author ?></p>
                         </div>
                         <div class="card-footer bg-transparent border-0 text-center pb-4">
-                            <button class="btn btn-primary w-75 mb-2" style="font-size: 1.1rem;">Enrol me in this
-                                course</button><br>
+                            <a href="<?= BASEURL ?>/courses/enroll?courseId=<?= $courseId ?>"
+                                class="btn btn-primary w-75 mb-2" style="font-size: 1.1rem;">Enroll me in this
+                                course</a>
                             <a href="<?= BASEURL ?>/courses/detail?courseId=<?= $courseId ?>"
                                 class="btn btn-outline-primary w-75">Details</a>
                         </div>

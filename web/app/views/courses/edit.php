@@ -3,9 +3,8 @@
         <div class="container">
             <h2 class="mt-5">Edit Course</h2>
             <hr>
-            <form id="editForm" action="<?= BASEURL ?>/courses/updateCourse" method="POST"
+            <form id="editForm" action="<?= BASEURL ?>/courses/updateCourse/<?= $data['courseId'] ?>" method="POST"
                 enctype="multipart/form-data">
-                <input type="hidden" name="courseId" id="courseId" value="<?= $data['courseId'] ?>">
                 <div class="mb-3">
                     <label for="title" class="form-label">Title</label>
                     <input type="text" class="form-control" id="title" name="title" required>
@@ -52,21 +51,29 @@
 
 
         $('#cancelBtn').on('click', function() {
-            window.location.href = "<?= BASEURL ?>/courses/detail/" + courseId;
+            Swal.fire({
+                title: "Discard changes you made?",
+                showCancelButton: true,
+                confirmButtonText: "Yes"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = "<?= BASEURL ?>/courses/detail?courseId=" + courseId;
+                }
+            });
+
         });
 
         $('#title').val('<?= $data['course']['title'] ?>');
         $('#description').summernote('code', courseDescriptionContent);
 
         // You'd also attach an AJAX submit handler to #editCourseForm here
-        $('#editCourseForm').on('submit', function(e) {
+        $('#editForm').on('submit', function(e) {
             e.preventDefault(); // Prevent default form submission
 
             var formData = new FormData(this); // Get form data, including files
 
             $.ajax({
-                url: '<?= BASEURL ?>/courses/updateCourse/' +
-                    courseId, // Your endpoint to handle form submission
+                url: $(this).attr('action'), // Your endpoint to handle form submission
                 method: 'POST',
                 data: formData,
                 processData: false, // Important for FormData
@@ -74,16 +81,19 @@
                 dataType: 'json', // Expect JSON response from server
                 success: function(response) {
                     if (response.success) {
-                        alert('Course updated successfully!');
-                        // Optionally reload the course details view after successful update
-                        // loadCourseDetails(response.courseId); // Assuming response contains course ID
+                        Swal.fire('Success!', response.message, 'success').then(() => {
+                            window.location.href =
+                                "<?= BASEURL ?>/courses/detail?courseId=" + courseId;
+                        });
                     } else {
-                        alert('Error: ' + response.message);
+                        Swal.fire('Error!', response.message, 'error').then(() => {
+                            window.location.href =
+                                "<?= BASEURL ?>/courses/detail?courseId=" + courseId;
+                        });
                     }
                 },
                 error: function(xhr, status, error) {
-                    alert('An error occurred during form submission.');
-                    console.error('Form Submit Error:', status, error, xhr.responseText);
+                    Swal.fire('AJAX Error!', 'Could not update course: ' + error, 'error');
                 }
             });
         });

@@ -83,5 +83,44 @@ class Courses extends Controller
             echo '<div class="alert alert-warning">Course not found for editing.</div>';
         }
     }
+    public function updateCourse($courseId)
+    {
+        // Set content type to JSON
+        header('Content-Type: application/json');
+
+        // Basic validation for POST and AJAX request
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST' || empty($_SERVER['HTTP_X_REQUESTED_WITH']) || strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) !== 'xmlhttprequest') {
+            echo json_encode(['success' => false, 'message' => 'Invalid request method or not an AJAX request.']);
+            exit;
+        }
+
+        // Prepare data for the model from $_POST   
+        $courseData = [
+            'title' => $_POST['title'] ?? '',
+            'description' => $_POST['description'] ?? '',
+        ];
+
+        // Pass the $_FILES['profilePicture'] array directly to the model
+        $thumbnailFile = $_FILES['thumbnail'] ?? null;
+
+        // Call the model to handle the update logic, including file upload
+        $updateResult = $this->model('Courses_model')->updateCourseData(
+            $courseId,
+            $courseData,
+            $thumbnailFile
+        );
+
+        // Respond to the AJAX request based on the model's result
+        if ($updateResult['success']) {
+
+            echo json_encode([
+                'success' => true,
+                'message' => $updateResult['message']
+            ]);
+        } else {
+            echo json_encode(['success' => false, 'message' => $updateResult['message']]);
+        }
+        exit;
+    }
     public function addModule($courseId) {}
 }

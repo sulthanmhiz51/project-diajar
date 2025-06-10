@@ -297,15 +297,15 @@ class Courses_model
         if ($this->db->rowCount() === 0) {
             return [
                 'success' => false,
-                'message' => 'Failed to delete account.'
+                'message' => 'Failed to delete course.'
             ];
         } else {
-            if (file_exists($profilePic)) {
+            if (file_exists($profilePic) && $result['thumbnail_url'] !== null) {
                 unlink($profilePic); // Delete old photo
             }
             return [
                 'success' => true,
-                'message' => 'Your account has been deleted.'
+                'message' => 'Course has been deleted.'
             ];
         }
     }

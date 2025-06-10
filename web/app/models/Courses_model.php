@@ -189,4 +189,89 @@ class Courses_model
         $result = $this->db->single();
         return (int)$result['COUNT(*)'] > 0;
     }
+    public function updateCourseData($courseId, array $courseData, ?array $thumbnailFile)
+    {
+        $title = htmlspecialchars($courseData['title']);
+        $description = $courseData['description'];
+        $newThumbnailPhotoName = null; // To store new uploaded photo name
+
+        // --- Handle File Upload ---
+        if ($thumbnailFile && $thumbnailFile['error'] === UPLOAD_ERR_OK) {
+            $uploadDir = __DIR__ . "/../../public/img/thumbnail/";
+            $fileTmpPath = $thumbnailFile['tmp_name'];
+            $fileName = $thumbnailFile['name'];
+            $fileSize = $thumbnailFile['size'];
+            $fileNameCmps = explode(".", $fileName);
+            $fileExtension = strtolower(end($fileNameCmps));
+
+            if (!is_dir($uploadDir)) {
+                mkdir($uploadDir, 0777, true); // Create directory if it doesn't exist
+            }
+
+            $newFileName = uniqid() . '_' . basename($fileName); // Generate unique name
+            $destPath = $uploadDir . $newFileName;
+
+            // Basic validation for file type and size
+            $allowedFileExtensions = ['jpg', 'jpeg', 'png', 'webp'];
+            if (!in_array($fileExtension, $allowedFileExtensions)) {
+                return [
+                    'success' => false,
+                    'message' => 'Only JPG, JPEG, PNG & WEBP files are allowed'
+                ];
+            }
+            if ($fileSize > 5000000) // Max 5MB
+            {
+                return [
+                    'success' => false,
+                    'message' => 'Thumbnail picture is too big (max 5MB)'
+                ];
+            }
+            if (!move_uploaded_file($fileTmpPath, $destPath)) {
+                error_log("Failed to move uploaded file...");
+                return ['success' => false, 'message' => 'Error uploading profile picture. Please try again.'];
+            }
+            // Fetch old photo filename
+            $this->db->query("SELECT thumbnail_url
+                                    FROM courses
+                                    WHERE id = :courseId");
+            $this->db->bind('courseId', $courseId);
+            $currentThumbnail = $this->db->single();
+
+            $oldThumbnailFile = $currentThumbnail['thumbnail_url'] ?? null;
+
+            $newThumbnailPhotoName = $newFileName;
+        }
+
+        if ($newThumbnailPhotoName !== null && $oldThumbnailFile !== null) {
+            $oldFilePath = __DIR__ . "/../../public/img/thumbnail/" . $oldThumbnailFile;
+            if (file_exists($oldFilePath)) {
+                unlink($oldFilePath); // Delete old Thumbnail
+            }
+        }
+
+        $query = "UPDATE " . $this->table . "
+                    SET title = :title, description = :desc";
+        if ($newThumbnailPhotoName !== null) {
+            $query .= ", thumbnail_url = :thumbnail";
+        }
+        $this->db->query($query);
+        $this->db->bind('title', $title);
+        $this->db->bind('desc', $description);
+        if ($newThumbnailPhotoName !== null) {
+            $this->db->bind('thumbnail', $newThumbnailPhotoName);
+        }
+        try {
+            $this->db->execute();
+            return [
+                'success' => true,
+                'message' => "Course updated successfully."
+            ];
+        } catch (PDOException $e) {
+            return [
+                'success' => false,
+                'error' => $e->errorInfo[1],
+                'message' => 'Failed to update course.',
+            ];
+        }
+    }
 }

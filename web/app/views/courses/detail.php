@@ -13,7 +13,7 @@ $desc = $course['description'];
             <div class="course-header">
                 <img src="<?= BASEURL ?>/img/thumbnail/<?= $thumbnail ?>" alt="Thumbnail" class="w-100 mb-4"
                     style="height: 250px; object-fit: cover;">
-                <?php if ($_SESSION['user_role'] === 'instructor'): ?>
+                <?php if (isset($_SESSION['user_role']) && $_SESSION['user_role'] === 'instructor'): ?>
                 <button id="editBtn" class="btn  btn-primary float-end ms-2">Edit</button>
                 <button id="deleteBtn" class="btn  btn-outline-danger float-end">Delete</button>
                 <?php endif; ?>
@@ -29,7 +29,7 @@ $desc = $course['description'];
 
             <?= $desc ?>
             <div>
-                <?php if ($_SESSION['user_role'] === 'instructor'): ?>
+                <?php if (isset($_SESSION['user_role']) && $_SESSION['user_role'] === 'instructor'): ?>
                 <a href="<?= BASEURL ?>/courses/create" class="btn  btn-primary float-end">Add Module</a>
                 <?php endif; ?>
                 <h3 class="my-4">Modules</h3>
@@ -60,7 +60,7 @@ $desc = $course['description'];
             </div>
 
             <div>
-                <?php if ($_SESSION['user_role'] === 'instructor'): ?>
+                <?php if (isset($_SESSION['user_role']) && $_SESSION['user_role'] === 'instructor'): ?>
 
                 <h3 class="my-4">Enrolled Students</h3>
 

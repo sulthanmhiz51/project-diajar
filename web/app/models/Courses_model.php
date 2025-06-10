@@ -254,7 +254,9 @@ class Courses_model
         if ($newThumbnailPhotoName !== null) {
             $query .= ", thumbnail_url = :thumbnail";
         }
+        $query .= " WHERE id = :courseId";
         $this->db->query($query);
+        $this->db->bind('courseId', $courseId);
         $this->db->bind('title', $title);
         $this->db->bind('desc', $description);
         if ($newThumbnailPhotoName !== null) {

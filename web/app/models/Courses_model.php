@@ -276,4 +276,37 @@ class Courses_model
             ];
         }
     }
+    public function deleteCourse($courseId)
+    {
+
+        // Fetch old photo filename
+        $this->db->query("SELECT thumbnail_url
+                                    FROM courses
+                                    WHERE id = :courseId");
+        $this->db->bind('courseId', $courseId);
+        $result = $this->db->single();
+        $profilePic = __DIR__ . "/../../public/img/thumbnail/" . $result['thumbnail_url']  ?? null;
+
+
+        $query = "DELETE FROM " . $this->table . "
+                    WHERE id=:courseId;";
+
+        $this->db->query($query);
+        $this->db->bind('courseId', $courseId);
+        $this->db->execute();
+        if ($this->db->rowCount() === 0) {
+            return [
+                'success' => false,
+                'message' => 'Failed to delete account.'
+            ];
+        } else {
+            if (file_exists($profilePic)) {
+                unlink($profilePic); // Delete old photo
+            }
+            return [
+                'success' => true,
+                'message' => 'Your account has been deleted.'
+            ];
+        }
+    }
 }

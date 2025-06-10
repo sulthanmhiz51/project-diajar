@@ -24,7 +24,9 @@ class Courses extends Controller
         $courseId = $_GET['courseId'];
         $course = $this->model('Courses_model')->loadCourse($courseId);
         $data['judul'] = 'Course Detail';
-        $data['enrolled'] = $this->model('Courses_model')->isUserEnrolled($_SESSION['user_id'], $courseId);
+        if (isset($_SESSION['user_id'])) {
+            $data['enrolled'] = $this->model('Courses_model')->isUserEnrolled($_SESSION['user_id'], $courseId);
+        }
         $data['course'] = $course['course'];
         $data['enrolled_students'] = $this->model('Courses_model')->getEnrolledStudentsByCourseId($courseId);
         $data['enrolled_students_count'] = count($data['enrolled_students']);
@@ -63,6 +65,11 @@ class Courses extends Controller
     }
     public function enroll()
     {
+        if (!isset($_SESSION['user_role'])) {
+            Flasher::setFlash('You have to sign in before enrolling to a course', 'warning');
+            header('Location: ' . BASEURL . '/courses');
+            exit;
+        }
         $result = $this->model('Courses_model')->enrollCourse($_SESSION['user_id'], $_GET['courseId']);
         if ($result['success'] == true) {
             Flasher::setFlash($result['message'], 'success');

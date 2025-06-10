@@ -122,5 +122,9 @@ class Courses extends Controller
         }
         exit;
     }
-    public function addModule($courseId) {}
+    public function deleteCourse($courseId)
+    {
+        $result = $this->model('Courses_model')->deleteCourse($courseId);
+        echo json_encode($result);
+    }
 }

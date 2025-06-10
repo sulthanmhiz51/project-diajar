@@ -21,10 +21,13 @@ class Courses extends Controller
         if (!isset($_GET['courseId'])) {
             header('Location: ' . BASEURL . '/courses/index');
         }
-        $course = $this->model('Courses_model')->loadCourse($_GET['courseId']);
+        $courseId = $_GET['courseId'];
+        $course = $this->model('Courses_model')->loadCourse($courseId);
         $data['judul'] = 'Course Detail';
-        $data['enrolled'] = $this->model('Courses_model')->isUserEnrolled($_SESSION['user_id'], $_GET['courseId']);
+        $data['enrolled'] = $this->model('Courses_model')->isUserEnrolled($_SESSION['user_id'], $courseId);
         $data['course'] = $course['course'];
+        $data['enrolled_students'] = $this->model('Courses_model')->getEnrolledStudentsByCourseId($courseId);
+        $data['enrolled_students_count'] = count($data['enrolled_students']);
 
         if ($course['success'] == false) {
             Flasher::setFlash($course['message'],  "danger");
@@ -127,4 +130,5 @@ class Courses extends Controller
         $result = $this->model('Courses_model')->deleteCourse($courseId);
         echo json_encode($result);
     }
+    public function getEnrolledStudents($courseId) {}
 }

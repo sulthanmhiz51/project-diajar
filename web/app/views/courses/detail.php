@@ -13,11 +13,14 @@ $desc = $course['description'];
             <div class="course-header">
                 <img src="<?= BASEURL ?>/img/thumbnail/<?= $thumbnail ?>" alt="Thumbnail" class="w-100 mb-4"
                     style="height: 250px; object-fit: cover;">
+                <?php if ($_SESSION['user_role'] === 'instructor'): ?>
                 <button id="editBtn" class="btn  btn-primary float-end ms-2">Edit</button>
                 <button id="deleteBtn" class="btn  btn-outline-danger float-end">Delete</button>
+                <?php endif; ?>
                 <h1><?= $title ?></h1>
                 <p class="m-0">Author: <?= $author ?> </p>
-                <p>Created at: <?= $createDate ?> </p>
+                <p class="m-0">Created at: <?= $createDate ?> </p>
+                <p>Students Enrolled: <?= $data['enrolled_students_count'] ?? 0 ?> </p>
             </div>
 
             <hr>
@@ -26,7 +29,9 @@ $desc = $course['description'];
 
             <?= $desc ?>
             <div>
+                <?php if ($_SESSION['user_role'] === 'instructor'): ?>
                 <a href="<?= BASEURL ?>/courses/create" class="btn  btn-primary float-end">Add Module</a>
+                <?php endif; ?>
                 <h3 class="my-4">Modules</h3>
             </div>
 
@@ -54,13 +59,49 @@ $desc = $course['description'];
                 </div>
             </div>
 
-            <div class="mt-5 text-center">
-                <a href="<?= BASEURL ?>/courses" class="btn btn-outline-primary">Kembali ke Daftar Kursus</a>
+            <div>
+                <?php if ($_SESSION['user_role'] === 'instructor'): ?>
+
+                <h3 class="my-4">Enrolled Students</h3>
+
+                <div class="p-3 bg-white rounded shadow-sm mb-3" style="min-height: 200px;">
+                    <table class="table table-striped m-0">
+                        <thead>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">First Name</th>
+                                <th scope="col">Last Name</th>
+                                <th scope="col">Date Enrolled</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php if (!empty($data['enrolled_students'])): ?>
+                            <?php $i = 1; ?>
+                            <?php foreach ($data['enrolled_students'] as $student): ?>
+                            <tr>
+                                <th scope="row"><?= $i++; ?></th>
+                                <td><?= htmlspecialchars($student['first_name']); ?></td>
+                                <td><?= htmlspecialchars($student['last_name']); ?></td>
+                                <td><?= date('Y-m-d H:i', strtotime($student['enrolled_at'])); ?></td>
+                            </tr>
+                            <?php endforeach; ?>
+                            <?php else: ?>
+                            <tr>
+                                <td colspan="4" class="text-center">No students enrolled in this course yet.</td>
+                            </tr>
+                            <?php endif; ?>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="mt-5 text-center">
+                    <a href="<?= BASEURL ?>/courses" class="btn btn-outline-primary">Kembali ke Daftar Kursus</a>
+                </div>
             </div>
+            <?php endif; ?>
         </div>
     </div>
-</div>
-<script>
+    <script>
     document.title = "<?= $title ?>"
 
     var detailContent = $('#detailContent');
@@ -130,4 +171,4 @@ $desc = $course['description'];
             }
         });
     });
-</script>
+    </script>

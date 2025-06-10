@@ -309,4 +309,19 @@ class Courses_model
             ];
         }
     }
+    public function getEnrolledStudentsByCourseId($courseId)
+    {
+        $query = "SELECT up.first_name, up.last_name, e.enrolled_at
+                    FROM enrollment AS e
+                    JOIN users AS u ON e.user_id = u.id
+                    JOIN users_profile AS up ON u.id = up.user_id
+                    WHERE e.course_id = :courseId
+                    ORDER BY e.enrolled_at DESC"; // Order by most recent enrollment
+
+        $this->db->query($query);
+        $this->db->bind('courseId', $courseId);
+
+        // Fetch all results
+        return $this->db->resultSet();
+    }
 }
